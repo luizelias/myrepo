@@ -44,6 +44,6 @@ jobs:
       run: Compress-Archive -Path "build/my_app.exe", "build/libs/*" -DestinationPath "my_app_Windows.zip"
 
     # Archive the build output for Linux
-    - name: Archive production artifacts (Linux)
+    - name: Archive production artifacts ( Linux )
       if: matrix.os == 'ubuntu-latest'
       run: zip -r my_app_Linux.zip build/my_app build/libs
