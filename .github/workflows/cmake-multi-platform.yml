@@ -72,13 +72,10 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        Compress-Archive -Path "${{ github.workspace }}\build\my_app.exe", "${{ github.workspace }}\build\libs\*" -DestinationPath "${{ github.workspace }}\my_app_Windows.zip"
-
+        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}\my_app.exe", "${{ steps.strings.outputs.build-output-dir }}\libs\*" -DestinationPath "${{ github.workspace }}\my_app_Windows.zip"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: my_app_${{ matrix.os }}
         path: ${{ github.workspace }}/my_app_${{ matrix.os }}.*
-
-
