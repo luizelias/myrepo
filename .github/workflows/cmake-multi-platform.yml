@@ -3,11 +3,18 @@ name: CMake on multiple platforms
 on: workflow_dispatch
 
 jobs:
-  windows-build:
-    runs-on: centos-latest
-
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "windows-latest", "macos-latest"]
     steps:
-      - name: print
-        run: |
-          echo "Hello World"
-          echo "Goodbye World"
+    - uses: actions/checkout@v2
+
+    - uses: knicknic/os-specific-run@v1
+      with:
+        macos: echo "Hi from macos"
+        linux: |
+          echo "Hi from linux"
+          echo "Hi from linux second line"
+        windows: echo "Hi from windows"
