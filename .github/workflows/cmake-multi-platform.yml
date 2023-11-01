@@ -1,98 +1,49 @@
-name: CMake on multiple platforms
+name: C++ CI Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ master ]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-
     strategy:
-      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        build_type: [Release]
-        c_compiler: [gcc, clang, cl]
-        include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: ubuntu-latest
-            c_compiler: cl
-
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
 
-    - name: Set reusable strings
-      id: strings
-      shell: bash
+    # For Linux: set GCC as the C++ compiler
+    - name: Set C++ Compiler to GCC (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: echo "CXX=g++" >> $GITHUB_ENV
+
+    # Install dependencies, for example using vcpkg
+    - name: Install dependencies
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        # Your vcpkg install commands here
 
-    - name: Setup vcpkg (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
-        cd C:\vcpkg
-        .\bootstrap-vcpkg.bat
-        .\vcpkg.exe integrate install
-
-    - name: Setup vcpkg (Ubuntu)
-      if: runner.os == 'Linux'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
-        cd ~/vcpkg
-        ./bootstrap-vcpkg.sh
-        ./vcpkg integrate install
-
-    - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_TOOLCHAIN_FILE=${{ runner.os == 'Windows' && 'C:/vcpkg/scripts/buildsystems/vcpkg.cmake' || '~/vcpkg/scripts/buildsystems/vcpkg.cmake' }}
-        -S ${{ github.workspace }}
-
+    # Build your project
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
 
-    - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
+    # List directory contents for debugging (optional)
+    - name: List directory contents (Linux)
+      if: matrix.os == 'ubuntu-latest'
+      run: ls -al
 
-    # Archive specific files for Windows
+    # Archive the build output for Windows
     - name: Archive production artifacts (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/my_app.exe", "${{ steps.strings.outputs.build-output-dir }}/libs/*" -DestinationPath "my_app_Windows.zip"
+      if: matrix.os == 'windows-latest'
+      run: Compress-Archive -Path "build/my_app.exe", "build/libs/*" -DestinationPath "my_app_Windows.zip"
 
-    # Archive specific files for Linux
+    # Archive the build output for Linux
     - name: Archive production artifacts (Linux)
-      if: runner.os == 'Linux'
-      run: |
-        cd ${{ steps.strings.outputs.build-output-dir }}
-        zip -r ../my_app_Linux.zip my_app ./libs
-
-    - name: Upload Windows artifacts
-      if: runner.os == 'Windows'
-      uses: actions/upload-artifact@v2
-      with:
-        name: my_app_windows
-        path: ${{ github.workspace }}/my_app_windows.zip
-
-    - name: Upload Linux artifacts
-      if: runner.os == 'Linux'
-      uses: actions/upload-artifact@v2
-      with:
-        name: my_app_linux
-        path: ${{ github.workspace }}/my_app_linux.zip
+      if: matrix.os == 'ubuntu-latest'
+      run: zip -r my_app_Linux.zip build/my_app build/libs
