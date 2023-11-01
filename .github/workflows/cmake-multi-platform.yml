@@ -44,16 +44,21 @@ jobs:
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -DCMAKE_TOOLCHAIN_FILE=${{ runner.os == 'Windows' && 'C:/vcpkg/scripts/buildsystems/vcpkg.cmake' || '~/vcpkg/scripts/buildsystems/vcpkg.cmake' }}
+        -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
         -S ${{ github.workspace }}
 
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    # List directory contents for debugging
-    - name: Debug - List build directory contents
+    # List contents of Release directory
+    - name: Debug - List contents of Release directory
       run: |
-        dir "${{ github.workspace }}/build"
+        dir "${{ steps.strings.outputs.build-output-dir }}/Release"
+
+    # List contents of dummyApp.dir directory
+    - name: Debug - List contents of dummyApp.dir directory
+      run: |
+        dir "${{ steps.strings.outputs.build-output-dir }}/dummyApp.dir"
 
     # Archive the build output for Windows
     - name: Archive production artifacts (Windows)
