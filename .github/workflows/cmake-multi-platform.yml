@@ -47,4 +47,3 @@ jobs:
     - name: Archive production artifacts (Linux)
       if: matrix.os == 'ubuntu-latest'
       run: zip -r my_app_Linux.zip build/my_app build/libs
-
