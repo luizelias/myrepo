@@ -1,49 +1,10 @@
-name: C++ CI Build
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
+name: Debug Workflow
+on: [push]
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  debug-job:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-
-    # For Linux: set GCC as the C++ compiler
-    - name: Set C++ Compiler to GCC (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: echo "CXX=g++" >> $GITHUB_ENV
-
-    # Install dependencies, for example using vcpkg
-    - name: Install dependencies
-      run: |
-        # Your vcpkg install commands here
-
-    # Build your project
-    - name: Build
-      run: |
-        mkdir build
-        cd build
-        cmake ..
-        make
-
-    # List directory contents for debugging (optional)
-    - name: List directory contents (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: ls -al
-
-    # Archive the build output for Windows
-    - name: Archive production artifacts (Windows)
-      if: matrix.os == 'windows-latest'
-      run: Compress-Archive -Path "build/my_app.exe", "build/libs/*" -DestinationPath "my_app_Windows.zip"
-
-    # Archive the build output for Linux
-    - name: Archive production artifacts (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: zip -r my_app_Linux.zip build/my_app build/libs
+    - name: Check out code
+      uses: actions/checkout@v2
+    - name: Print a message
+      run: echo "Workflow is running!"
