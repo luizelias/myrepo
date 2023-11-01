@@ -45,10 +45,6 @@ jobs:
           ./vcpkg integrate install
         }
 
-
-
-
-
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -76,7 +72,7 @@ jobs:
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
-        Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "${{ github.workspace }}/my_app_Windows.zip"
+        Compress-Archive -Path "${{ github.workspace }}\build\my_app.exe", "${{ github.workspace }}\build\libs\*" -DestinationPath "${{ github.workspace }}\my_app_Windows.zip"
 
 
     - name: Upload artifacts
