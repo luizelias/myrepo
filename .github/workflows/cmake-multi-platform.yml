@@ -30,13 +30,17 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Setup vcpkg (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup vcpkg
       run: |
-        git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
-        cd C:\vcpkg
-        .\bootstrap-vcpkg.bat
-        .\vcpkg.exe integrate install
+        git clone https://github.com/microsoft/vcpkg.git ${{ github.workspace }}/vcpkg
+        cd ${{ github.workspace }}/vcpkg
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe integrate install
+        else
+          ./bootstrap-vcpkg.sh
+          ./vcpkg integrate install
+        fi
 
     - name: Configure CMake
       run: >
