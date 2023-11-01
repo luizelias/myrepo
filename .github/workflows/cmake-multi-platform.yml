@@ -1,3 +1,11 @@
 name: CMake on multiple platforms
 
 on: workflow_dispatch
+
+jobs:
+  windows-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: print
+        run: echo "Hello World"
