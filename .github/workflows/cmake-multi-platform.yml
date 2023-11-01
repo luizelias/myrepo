@@ -58,18 +58,18 @@ jobs:
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
     
-    # Archive and upload the build output
-    # Archive and upload the build output
+    # Archive specific files for Windows
     - name: Archive production artifacts (Windows)
       if: runner.os == 'Windows'
       run: |
-        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/*" -DestinationPath "${{ github.workspace }}/my_app_windows.zip"
+        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/my_app.exe", "${{ steps.strings.outputs.build-output-dir }}/libs/*" -DestinationPath "my_app_Windows.zip"
 
+    # Archive specific files for Linux
     - name: Archive production artifacts (Linux)
       if: runner.os == 'Linux'
       run: |
-        cd ${{ github.workspace }}
-        zip -r my_app_linux.zip build/
+        cd ${{ steps.strings.outputs.build-output-dir }}
+        zip -r ../my_app_Linux.zip my_app ./libs
 
     - name: Upload Windows artifacts
       if: runner.os == 'Windows'
