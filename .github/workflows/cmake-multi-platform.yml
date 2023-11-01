@@ -67,3 +67,8 @@ jobs:
       if: runner.os == 'Linux'
       run: zip -r my_app.zip ${{ steps.strings.outputs.build-output-dir }}
 
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: my_app
+        path: my_app.zip
