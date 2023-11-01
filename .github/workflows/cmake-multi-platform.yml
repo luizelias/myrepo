@@ -23,16 +23,6 @@ jobs:
       run: |
         echo "CXX=g++" >> $GITHUB_ENV
 
-    # Add a step to install dependencies if needed.
-    # - name: Install dependencies
-    #   run: |
-    #     # Commands to install dependencies
 
-    - name: Build project
-      run: |
-        mkdir -p build
-        cd build
-        cmake ..
-        make
 
 
