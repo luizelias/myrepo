@@ -61,14 +61,17 @@ jobs:
     # Archive and upload the build output
     - name: Archive production artifacts (Windows)
       if: runner.os == 'Windows'
-      run: Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/*" -DestinationPath "my_app.zip"
+      run: |
+        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/*" -DestinationPath "${{ github.workspace }}/my_app_windows.zip"
 
     - name: Archive production artifacts (Linux)
       if: runner.os == 'Linux'
-      run: zip -r my_app.zip ${{ steps.strings.outputs.build-output-dir }}
+      run: |
+        cd ${{ github.workspace }}
+        zip -r my_app_linux.zip build/
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: my_app
-        path: my_app.zip
+        name: my_app_${{ runner.os }}
+        path: ${{ github.workspace }}/my_app_${{ runner.os }}.zip
