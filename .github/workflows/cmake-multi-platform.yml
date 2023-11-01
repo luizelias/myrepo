@@ -73,9 +73,8 @@ jobs:
 
     # Archive specific files for Windows
     - name: Archive production artifacts (Windows)
-      if: runner.os == 'Windows'
-      run: |
-        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/my_app.exe", "${{ steps.strings.outputs.build-output-dir }}/libs/*" -DestinationPath "my_app_Windows.zip"
+      if: matrix.os == 'windows-latest'
+      run: Compress-Archive -Path "build/my_app.exe", "build/libs/*" -DestinationPath "my_app_Windows.zip"
 
     ## Archive specific files for Linux
     #- name: Archive production artifacts (Linux)
