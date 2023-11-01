@@ -33,8 +33,9 @@ jobs:
     - name: Setup vcpkg
       shell: bash
       run: |
-        git clone https://github.com/microsoft/vcpkg.git ${{ github.workspace }}/vcpkg
-        cd ${{ github.workspace }}/vcpkg
+        VCPKG_DIR="${{ github.workspace }}/vcpkg"
+        git clone https://github.com/microsoft/vcpkg.git $VCPKG_DIR
+        cd $VCPKG_DIR
         if [[ "${{ runner.os }}" == "Windows" ]]; then
           .\bootstrap-vcpkg.bat
           .\vcpkg.exe integrate install
@@ -42,6 +43,7 @@ jobs:
           ./bootstrap-vcpkg.sh
           ./vcpkg integrate install
         fi
+
 
 
     - name: Configure CMake
