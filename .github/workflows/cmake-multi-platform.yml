@@ -72,14 +72,12 @@ jobs:
         dir "${{ steps.strings.outputs.build-output-dir }}/dummyApp.dir"
 
     # Archive the build output for Windows
-    - name: Archive production artifacts
+    - name: Archive production artifacts (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
       run: |
-        if [ "${{ runner.os }}" == "Windows" ]; then
-          Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "${{ github.workspace }}/my_app_Windows.zip"
-        else
-          # Use tar or any other tool for Linux
-          tar -czvf ${GITHUB_WORKSPACE}/my_app_Linux.tar.gz -C ${GITHUB_WORKSPACE}/build my_app libs/*
-        fi
+        Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "${{ github.workspace }}/my_app_Windows.zip"
+
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
