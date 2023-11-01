@@ -31,16 +31,20 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Setup vcpkg
+      shell: pwsh
       run: |
-        VCPKG_DIR="${{ github.workspace }}/vcpkg"
+        $VCPKG_DIR = "${{ github.workspace }}\vcpkg"
         git clone https://github.com/microsoft/vcpkg.git $VCPKG_DIR
-        cd $VCPKG_DIR
-        if [[ "${{ runner.os }}" == "Windows" ]]; then
-          bash -c ".\\bootstrap-vcpkg.bat && .\\vcpkg.exe integrate install"
-        else
+        Set-Location -Path $VCPKG_DIR
+        if ($env:RUNNER_OS -eq "Windows") {
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe integrate install
+        }
+        else {
           ./bootstrap-vcpkg.sh
           ./vcpkg integrate install
-        fi
+        }
+
 
 
 
