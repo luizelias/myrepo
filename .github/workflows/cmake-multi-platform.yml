@@ -71,11 +71,11 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    ## Archive specific files for Windows
-    #- name: Archive production artifacts (Windows)
-    #  if: runner.os == 'Windows'
-    #  run: |
-    #    Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/my_app.exe", "${{ steps.strings.outputs.build-output-dir }}/libs/*" -DestinationPath "my_app_Windows.zip"
+    # Archive specific files for Windows
+    - name: Archive production artifacts (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/my_app.exe", "${{ steps.strings.outputs.build-output-dir }}/libs/*" -DestinationPath "my_app_Windows.zip"
 
     ## Archive specific files for Linux
     #- name: Archive production artifacts (Linux)
@@ -84,12 +84,12 @@ jobs:
     #    cd ${{ steps.strings.outputs.build-output-dir }}
     #    zip -r ../my_app_Linux.zip my_app ./libs
 
-    #- name: Upload Windows artifacts
-    #  if: runner.os == 'Windows'
-    #  uses: actions/upload-artifact@v2
-    #  with:
-    #    name: my_app_windows
-    #    path: ${{ github.workspace }}/my_app_windows.zip
+    - name: Upload Windows artifacts
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v2
+      with:
+        name: my_app_windows
+        path: ${{ github.workspace }}/my_app_windows.zip
 
     #- name: Upload Linux artifacts
     #  if: runner.os == 'Linux'
