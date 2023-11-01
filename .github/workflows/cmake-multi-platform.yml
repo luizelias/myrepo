@@ -6,8 +6,8 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      -name: Print
+      - name: Print
         run: echo "merda"
-      -name: Print2
+      - name: Print2
         run: echo "merda2"
       
