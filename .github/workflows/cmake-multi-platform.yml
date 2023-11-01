@@ -30,23 +30,17 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Setup vcpkg (Windows)
-      if: runner.os == 'Windows'
+    - name: Setup vcpkg
       run: |
-        git clone https://github.com/microsoft/vcpkg.git "${{ github.workspace }}\vcpkg"
-        cd "${{ github.workspace }}\vcpkg"
-        .\bootstrap-vcpkg.bat
-        .\vcpkg.exe integrate install
-      shell: powershell
-
-    - name: Setup vcpkg (Linux)
-      if: runner.os == 'Linux'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git "${{ github.workspace }}/vcpkg"
-        cd "${{ github.workspace }}/vcpkg"
-        ./bootstrap-vcpkg.sh
-        ./vcpkg integrate install
-
+        git clone https://github.com/microsoft/vcpkg.git ${{ github.workspace }}/vcpkg
+        cd ${{ github.workspace }}/vcpkg
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe integrate install
+        else
+          ./bootstrap-vcpkg.sh
+          ./vcpkg integrate install
+        fi
 
     - name: Configure CMake
       run: >
@@ -71,15 +65,19 @@ jobs:
         dir "${{ steps.strings.outputs.build-output-dir }}/dummyApp.dir"
 
     # Archive the build output for Windows
-    - name: Archive production artifacts (Windows)
-      if: matrix.os == 'windows-latest'
+    - name: Archive production artifacts
       run: |
-        Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "my_app_Windows.zip"
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "${{ github.workspace }}/my_app_Windows.zip"
+        else
+          # Use tar or any other tool for Linux
+          tar -czvf ${GITHUB_WORKSPACE}/my_app_Linux.tar.gz -C ${GITHUB_WORKSPACE}/build my_app libs/*
+        fi
 
-    - name: Upload Windows artifacts
-      if: runner.os == 'Windows'
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: my_app_windows
-        path: ${{ github.workspace }}/my_app_windows.zip
+        name: my_app_${{ matrix.os }}
+        path: ${{ github.workspace }}/my_app_${{ matrix.os }}.*
+
 
