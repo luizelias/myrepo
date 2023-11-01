@@ -59,11 +59,11 @@ jobs:
       run: ctest --build-config ${{ matrix.build_type }}
     
     # Archive and upload the build output
-    - name: Archive production artifacts
+    - name: Archive production artifacts (Windows)
+      if: runner.os == 'Windows'
+      run: Compress-Archive -Path "${{ steps.strings.outputs.build-output-dir }}/*" -DestinationPath "my_app.zip"
+
+    - name: Archive production artifacts (Linux)
+      if: runner.os == 'Linux'
       run: zip -r my_app.zip ${{ steps.strings.outputs.build-output-dir }}
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: my_app
-        path: my_app.zip
