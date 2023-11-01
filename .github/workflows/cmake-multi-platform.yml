@@ -13,26 +13,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang, cl]
+        c_compiler: [cl]
         include:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
 
     steps:
     - uses: actions/checkout@v3
@@ -51,14 +38,6 @@ jobs:
         .\bootstrap-vcpkg.bat
         .\vcpkg.exe integrate install
 
-    - name: Setup vcpkg (Ubuntu)
-      if: runner.os == 'Linux'
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
-        cd ~/vcpkg
-        ./bootstrap-vcpkg.sh
-        ./vcpkg integrate install
-
     - name: Configure CMake
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
@@ -71,17 +50,16 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    # Archive specific files for Windows
+    # List directory contents for debugging
+    - name: Debug - List build directory contents
+      run: |
+        dir "${{ github.workspace }}/build"
+
+    # Archive the build output for Windows
     - name: Archive production artifacts (Windows)
       if: matrix.os == 'windows-latest'
-      run: Compress-Archive -Path "build/my_app.exe", "build/libs/*" -DestinationPath "my_app_Windows.zip"
-
-    ## Archive specific files for Linux
-    #- name: Archive production artifacts (Linux)
-    #  if: runner.os == 'Linux'
-    #  run: |
-    #    cd ${{ steps.strings.outputs.build-output-dir }}
-    #    zip -r ../my_app_Linux.zip my_app ./libs
+      run: |
+        Compress-Archive -Path "${{ github.workspace }}/build/my_app.exe", "${{ github.workspace }}/build/libs/*" -DestinationPath "my_app_Windows.zip"
 
     - name: Upload Windows artifacts
       if: runner.os == 'Windows'
@@ -90,9 +68,3 @@ jobs:
         name: my_app_windows
         path: ${{ github.workspace }}/my_app_windows.zip
 
-    #- name: Upload Linux artifacts
-    #  if: runner.os == 'Linux'
-    #  uses: actions/upload-artifact@v2
-    #  with:
-    #    name: my_app_linux
-    #    path: ${{ github.workspace }}/my_app_linux.zip
