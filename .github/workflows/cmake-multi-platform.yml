@@ -13,6 +13,6 @@ jobs:
       - name: run vcpkg
         uses: lukka/run-vcpkg@v4
         with:
-          vcpkgArguments: 'glm'
+          #vcpkgArguments: 'glm'
           vcpkgDirectory: '${{ github.workspace }}/vcpkg'
       
