@@ -8,7 +8,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: test vcpkg
-        run: vcpgk
-
+      - name: run vcpkg
+        uses: lukka/run-vcpkg@v4
+        with:
+          vcpkgArguments: 'glm'
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
       
