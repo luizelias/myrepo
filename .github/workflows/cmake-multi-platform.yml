@@ -7,11 +7,11 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - name: Install vcpkg
-        run: git clone https://github.com/microsoft/vcpkg
+     # - name: Install vcpkg
+      #  run: git clone https://github.com/microsoft/vcpkg
 
       - name: List directory contents
-        run: dir ${{ github.workspace }}/myrepo
+        run: dir ${{ github.workspace }}/
 
 
 
