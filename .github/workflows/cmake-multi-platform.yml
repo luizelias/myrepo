@@ -16,6 +16,8 @@ jobs:
       #- name: Install dependencies
       #  run: ./vcpkg/vcpkg install <your-dependencies-here>
 
+      - name: Configure
+        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 
 
