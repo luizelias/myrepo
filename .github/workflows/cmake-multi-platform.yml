@@ -3,12 +3,19 @@ name: CMake on multiple platforms
 on: workflow_dispatch
 
 jobs:
-  build-windows:
+  find-vcpkg:
     runs-on: windows-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: debug path
-        run : echo "banana"
-      
+      - name: Try to find vcpkg
+        run: |
+          echo "Checking for vcpkg..."
+          VCPKG_PATH=$(where vcpkg)
+          if [ -z "$VCPKG_PATH" ]
+          then
+            echo "vcpkg not found"
+          else
+            echo "vcpkg found at $VCPKG_PATH"
+          fi
