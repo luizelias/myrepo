@@ -10,12 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Try to find vcpkg
+      - name: Setup vcpkg
         run: |
-          echo "Checking for vcpkg..."
-          $vcpkgPath = Get-Command vcpkg -ErrorAction SilentlyContinue
-          if ($null -eq $vcpkgPath) {
-            echo "vcpkg not found"
-          } else {
-            echo "vcpkg found at $($vcpkgPath.Source)"
-          }
+          cd C:\vcpkg
+          bootstrap-vcpkg.bat
+          vcpkg --feature-flags=manifests install
+          
+
+
