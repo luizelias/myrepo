@@ -11,7 +11,7 @@ jobs:
       #  run: git clone https://github.com/microsoft/vcpkg
 
       - name: List directory contents
-        run: dir ${{ github.workspace }}/
+        run: dir ${{ github.workspace }}/myrepo
 
 
 
