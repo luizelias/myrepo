@@ -1,5 +1,14 @@
 {
-  "name": "myrepo",
-  "version-string": "0.0.1",
-  "dependencies": [glm]
+  "name": "your-project-name",
+  "version": "1.0.0",
+  "dependencies": [
+    {
+      "name": "glm",
+      "version>=": "0.9.9"
+    },
+    {
+      "name": "eigen3",
+      "version>=": "3.3.7"
+    }
+  ]
 }
