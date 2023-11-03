@@ -5,13 +5,23 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: windows-latest
+
+
     
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+   
       - name: Install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
-          ${{ github.workspace }}/vcpkg/vcpkg install glm
+
+      - name: Build
+        run: |
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake --build build
+          
 
     #  - name: List directory contents
      #   run: |
