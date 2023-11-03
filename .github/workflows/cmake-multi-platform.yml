@@ -11,6 +11,7 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg
           ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
+          ${{ github.workspace }}/vcpkg/vcpkg install glm
 
     #  - name: List directory contents
      #   run: |
