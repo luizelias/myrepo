@@ -2,19 +2,32 @@ name: CMake on multiple platforms
 
 on: workflow_dispatch
 
-
 jobs:
-  find-vcpkg:
+  build:
     runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup vcpkg
+      - name: Install Conan
         run: |
-          cd C:\vcpkg
-          bootstrap-vcpkg.bat
-          vcpkg --feature-flags=manifests install --x-manifest-root=${{ github.workspace }}
+          choco install conan -y
+
+      - name: Install dependencies
+        run: |
+          conan install . --build=missing
+
+      - name: Create build directory
+        run: |
+          mkdir build
+          cd build
+
+      - name: Run CMake
+        run: |
+          cd build
+          cmake .. -G "Visual Studio 16 2019"
+          cmake --build . --config Release
+
 
           
 
