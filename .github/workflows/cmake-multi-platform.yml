@@ -11,13 +11,13 @@ jobs:
         run: git clone https://github.com/microsoft/vcpkg
 
       - name: Bootstrap vcpkg
-        run: ./vcpkg/bootstrap-vcpkg.sh
+        run: ${{ github.workspace }}/myrepo/vcpkg/bootstrap-vcpkg.bat
 
       #- name: Install dependencies
-      #  run: ./vcpkg/vcpkg install <your-dependencies-here>
+      #  run: ${{ github.workspace }}/myrepo/vcpkg/vcpkg install <your-dependencies-here>
 
       - name: Configure
-        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake
+        run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/myrepo/vcpkg/scripts/buildsystems/vcpkg.cmake 
 
 
 
