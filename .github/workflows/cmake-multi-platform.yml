@@ -6,15 +6,10 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: lukka/get-cmake@latest
 
-      - name: Setup vcpkg
-        run: |
-          cd C:\vcpkg
-          bootstrap-vcpkg.bat
-          vcpkg --feature-flags=manifests install
-
-          
+      - name: Setup vcpkg (it does not install any package yet)
+        uses: lukka/run-vcpkg@v11
 
 
+      
