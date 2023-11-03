@@ -14,7 +14,8 @@ jobs:
         run: |
           cd C:\vcpkg
           bootstrap-vcpkg.bat
-          vcpkg --feature-flags=manifests install
+          vcpkg --feature-flags=manifests install --x-manifest-root=${{ github.workspace }}
+
           
 
 
