@@ -7,7 +7,7 @@ int main() {
 
  // auto v3 = v1 + v2;
 
- // std::cout << "vector.x = " << v3.x << std::endl;
+ // std::cout << "vector.x = " << v3.x << std::endl; 
 
   return 0;
 }
