@@ -5,23 +5,19 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: windows-latest
-
-    env:
-      # Indicates the location of the vcpkg as a Git submodule of the project repository.
-      # Not using "VCPKG_ROOT" because a variable with the same name is defined in the VS's
-      # Developer Command Prompt environment in VS 2022 17.6, which would override this one 
-      # if it had the same name.
-      _VCPKG_: ${{ github.workspace }}/vcpkg
-      # Tells vcpkg where binary packages are stored.
-      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
-      # Let's use GitHub Action cache as storage for the vcpkg Binary Caching feature.
-      VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
     
     steps:
-      - uses: lukka/get-cmake@latest
+      - name: Install vcpkg
+        run: git clone https://github.com/microsoft/vcpkg
 
-      - name: Setup vcpkg (it does not install any package yet)
-        uses: lukka/run-vcpkg@v11 
+      - name: Bootstrap vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh
+
+      #- name: Install dependencies
+      #  run: ./vcpkg/vcpkg install <your-dependencies-here>
+
+
+
 
 
       
