@@ -8,7 +8,9 @@ jobs:
     
     steps:
       - name: Install vcpkg
-        run: git clone https://github.com/microsoft/vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          ${{ github.workspace }}/myrepo/vcpkg/bootstrap-vcpkg.bat
 
     #  - name: List directory contents
      #   run: |
