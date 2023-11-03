@@ -21,7 +21,7 @@ jobs:
       - uses: lukka/get-cmake@latest
 
       - name: Setup vcpkg (it does not install any package yet)
-        uses: lukka/run-vcpkg@v11
+        uses: lukka/run-vcpkg@v11 
 
 
       
