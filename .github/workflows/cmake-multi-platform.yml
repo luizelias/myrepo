@@ -1,29 +1,14 @@
-name: Populate dependencies
+name: CMake on multiple platforms
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  VCPKG_FEATURE_FLAGS: dependencygraph
+on: workflow_dispatch
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  build-windows:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: 'recursive'
+      - name: checkout
+        uses: actions/checkout@v3
 
-    # This will execute a dry-run, meaning that libraries will not be built and
-    # installed, but they will still be reported to the GitHub dependency graph.
-    # This step assumes `vcpkg` has been bootstrapped (run `./vcpkg/bootstrap-vcpkg`)
-    - name: Run vcpkg
-      run: ${{ github.workspace }}/vcpkg/vcpkg install --dry-runs
+      - name: debug path
+        run : echo "banana"
+      
