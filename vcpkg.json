@@ -2,13 +2,7 @@
   "name": "your-project-name",
   "version": "1.0.0",
   "dependencies": [
-    {
-      "name": "glm",
-      "version>=": "0.9.9"
-    },
-    {
-      "name": "eigen3",
-      "version>=": "3.3.7"
-    }
+    "glm",
+    "eigen3"
   ]
 }
