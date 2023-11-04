@@ -10,16 +10,16 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+     # - name: Checkout code
+      #  uses: actions/checkout@v2
 
-      - name: Cache vcpkg artifacts
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/vcpkg/installed
-            ${{ github.workspace }}/vcpkg
-          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+      #- name: Cache vcpkg artifacts
+       # uses: actions/cache@v2
+        #with:
+         # path: |
+          #  ~/vcpkg/installed
+           # ${{ github.workspace }}/vcpkg
+          #key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       - name: Install build tools (Ubuntu)
         if: runner.os == 'Linux'
