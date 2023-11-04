@@ -21,12 +21,15 @@ jobs:
             ${{ github.workspace }}/vcpkg
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v10
-        with:
-          vcpkgDirectory: ${{ github.workspace }}/vcpkg
-          vcpkgGitCommitId: dacf6f4751f49913e548e7a3e0e2a0f4b75a493e  # specify the commit id of vcpkg repo that you want to use.
-          setupOnly: true
+      - name: Install vcpkg
+        shell: bash
+        run: |
+          git clone https://github.com/microsoft/vcpkg
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
+          else
+            ./vcpkg/bootstrap-vcpkg.sh
+          fi
 
       - name: Build
         run: |
