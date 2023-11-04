@@ -1,5 +1,5 @@
 {
-  "name": "myrepo",
+  "name": "dependencies",
   "version": "1.0.0",
   "dependencies": [
     "alembic",
