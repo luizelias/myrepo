@@ -24,7 +24,11 @@ jobs:
       - name: Install build tools (Ubuntu)
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y build-essential cmake g++
-      
+
+      - name: Install Ninja (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y ninja-build
+
       - name: Install vcpkg
         shell: pwsh
         run: |
