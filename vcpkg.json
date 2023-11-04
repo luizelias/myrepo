@@ -2,14 +2,14 @@
   "name": "myrepo",
   "version": "1.0.0",
   "dependencies": [
-    "Alembic",
+    "alembic",
     "eigen3",
     "glm",
     "glad",
     "glfw3",
     "fmt",
     "asio",
-    "CURL",
+    "curl",
     "nlohmann_json"
   ]
 }
