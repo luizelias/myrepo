@@ -22,14 +22,14 @@ jobs:
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       - name: Install vcpkg
-        shell: bash
         run: |
           git clone https://github.com/microsoft/vcpkg
-          if [[ "$RUNNER_OS" == "Windows" ]]; then
-            bash -c "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat"
-          else
+          if ("${{ matrix.os }}" -eq "windows-latest") {
+            powershell -Command "${{ github.workspace }}\vcpkg\bootstrap-vcpkg.bat"
+          } else {
             ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh
-          fi
+          }
+        shell: pwsh
 
       - name: Build
         run: |
