@@ -22,6 +22,7 @@ jobs:
           key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
 
       - name: Install vcpkg
+        shell: bash
         run: |
           git clone https://github.com/microsoft/vcpkg
           if [[ "${{ runner.os }}" == "Windows" ]]; then
