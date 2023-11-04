@@ -10,6 +10,6 @@
     "fmt",
     "asio",
     "curl",
-    "nlohmann_json"
+    "nlohmann-json"
   ]
 }
