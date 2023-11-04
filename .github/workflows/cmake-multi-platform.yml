@@ -4,43 +4,32 @@ on: workflow_dispatch
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macOS-latest]
+    runs-on: ${{ matrix.os }}
 
-
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-   
+
+      - name: Cache vcpkg artifacts
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/vcpkg/installed
+            ${{ github.workspace }}/vcpkg
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('vcpkg.json') }}
+
       - name: Install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg
-          ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
+          ./vcpkg/bootstrap-vcpkg.sh  # adjusted for non-Windows OSes
 
       - name: Build
         run: |
           cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake --build build
-          
-
-    #  - name: List directory contents
-     #   run: |
-      #    echo ${{ github.workspace }}
-       #   cd ${{ github.workspace }}
-        #  dir ${{ github.workspace }} 
-
-
-
-     # - name: Bootstrap vcpkg
-      #  run: ${{ github.workspace }}/myrepo/vcpkg/bootstrap-vcpkg.bat
-
-      #- name: Install dependencies
-      #  run: ${{ github.workspace }}/myrepo/vcpkg/vcpkg install <your-dependencies-here>
-
-      #- name: Configure
-       # run: cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/myrepo/vcpkg/scripts/buildsystems/vcpkg.cmake 
-
-
 
 
       
