@@ -24,7 +24,7 @@ jobs:
       - name: Install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git
-          bash vcpkg/bootstrap-vcpkg.sh
+          ./vcpkg/bootstrap-vcpkg.sh
 
       - name: List vcpkg directory
         run: ls -la "${{ github.workspace }}/vcpkg"
