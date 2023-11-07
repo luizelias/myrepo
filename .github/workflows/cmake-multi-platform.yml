@@ -11,24 +11,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Enable EPEL repository
-        run: yum install -y epel-release
+      - name: Install vcpkg
+        uses: lukka/get-vcpkg@v1
+        with:
+          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
+          vcpkgGitCommitId: '8eb5735'
 
-      - name: Install build tools (CentOS)
+      - name: Enable EPEL repository and Install tools
         run: |
+          yum install -y epel-release
           yum update -y
           yum groupinstall -y "Development Tools"
-          yum install -y cmake3 make automake gcc gcc-c++ kernel-devel
-
-      - name: Install vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          ./vcpkg/bootstrap-vcpkg.sh
+          yum install -y cmake3
 
       - name: Check CMake version
         run: cmake3 --version
 
       - name: Build with CMake and vcpkg
         run: |
-          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake3 --build build
