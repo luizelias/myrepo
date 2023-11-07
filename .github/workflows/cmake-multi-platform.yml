@@ -11,11 +11,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgGitCommitId: '8eb5735'
+      - name: Manually install vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          vcpkg integrate install
 
       - name: Enable EPEL repository and Install tools
         run: |
