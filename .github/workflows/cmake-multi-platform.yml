@@ -22,8 +22,7 @@ jobs:
           yum install -y cmake3 make automake gcc gcc-c++ kernel-devel
 
       - name: Install vcpkg
-        shell: pwsh
-        run: "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh"
+        run: bash "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh"
 
       - name: Build with CMake and vcpkg
         run: |
