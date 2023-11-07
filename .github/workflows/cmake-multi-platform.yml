@@ -26,8 +26,11 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.sh
 
-      - name: List vcpkg directory
-        run: ls -la "${{ github.workspace }}/vcpkg"
+      - name: Verify vcpkg directory
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          ls -la vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh
 
       - name: Check CMake version
         run: cmake --version
