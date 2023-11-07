@@ -32,7 +32,7 @@ jobs:
           ./vcpkg/bootstrap-vcpkg.sh
 
       - name: Check CMake version
-        run: cmake --version
+        run: cmake3 --version
 
       - name: Build with CMake and vcpkg
         run: |
