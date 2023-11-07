@@ -8,6 +8,9 @@ jobs:
     container: centos:7.9.2009
 
     steps:
+      - name: Install Cmake
+        uses: lukka/get-cmake@latest
+    
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -22,10 +25,6 @@ jobs:
           yum install -y epel-release
           yum update -y
           yum groupinstall -y "Development Tools"
-          yum install -y cmake3
-
-      - name: Check CMake version
-        run: cmake3 --version
 
       - name: Build with CMake and vcpkg
         run: |
