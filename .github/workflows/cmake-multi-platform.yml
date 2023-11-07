@@ -32,7 +32,6 @@ jobs:
           yum install -y centos-release-scl
           yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
           echo "source /opt/rh/devtoolset-8/enable" >> ~/.bashrc
-          source /opt/rh/devtoolset-8/enable
 
       - name: Install dependencies with vcpkg
         run: |
@@ -42,5 +41,6 @@ jobs:
       - name: Build with CMake and vcpkg
         run: |
           source /opt/rh/devtoolset-8/enable
+          ./vcpkg/vcpkg integrate install
           cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake3 --build build
