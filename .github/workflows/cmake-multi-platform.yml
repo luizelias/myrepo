@@ -11,9 +11,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install git
+      - name: Install required tools
         run: |
-          yum install -y git
+          yum install -y curl zip unzip tar git 
 
       - name: Manually install vcpkg
         run: |
