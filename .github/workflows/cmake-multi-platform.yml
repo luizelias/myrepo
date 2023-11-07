@@ -36,5 +36,6 @@ jobs:
 
       - name: Build with CMake and vcpkg
         run: |
-          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          ls -la vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake3 --build build
