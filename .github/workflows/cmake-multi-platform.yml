@@ -1,4 +1,4 @@
-name: CMake on multiple platforms
+name: CMake on CentOS 7.9
 
 on: workflow_dispatch
 
@@ -11,23 +11,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install build tools (Ubuntu)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y build-essential cmake g++
-
-      - name: Install Ninja (Ubuntu)
-        if: runner.os == 'Linux'
-        run: sudo apt-get install -y ninja-build
-
-      - name: Install dependencies (Ubuntu)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
+      - name: Install build tools (CentOS)
+        run: |
+          yum update -y
+          yum groupinstall -y "Development Tools"
+          yum install -y cmake3
 
       - name: Install vcpkg
         shell: pwsh
         run: "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh"
 
-      - name: Build
+      - name: Build with CMake and vcpkg
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
-          cmake --build build
+          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake3 --build build
