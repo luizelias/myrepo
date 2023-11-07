@@ -7,15 +7,19 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: centos:7.9.2009
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Enable EPEL repository
+        run: yum install -y epel-release
 
       - name: Install build tools (CentOS)
         run: |
           yum update -y
           yum groupinstall -y "Development Tools"
-          yum install -y cmake3
+          yum install -y cmake3 make automake gcc gcc-c++ kernel-devel
 
       - name: Install vcpkg
         shell: pwsh
