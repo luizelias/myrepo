@@ -2,14 +2,6 @@
   "name": "dependencies",
   "version": "1.0.0",
   "dependencies": [
-    "alembic",
-    "eigen3",
-    "glm",
-    "glad",
-    "glfw3",
-    "fmt",
-    "asio",
-    "curl",
-    "nlohmann-json"
+    "glm"
   ]
 }
