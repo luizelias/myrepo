@@ -28,7 +28,6 @@ jobs:
 
       - name: Verify vcpkg directory
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
           ls -la vcpkg
           ./vcpkg/bootstrap-vcpkg.sh
 
