@@ -11,6 +11,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install git
+        run: |
+          yum install -y git
+
       - name: Manually install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git
