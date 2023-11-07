@@ -4,11 +4,9 @@ on: workflow_dispatch
 
 jobs:
   build:
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-
+    runs-on: ubuntu-latest
+    container:
+      image: centos:7.9.2009
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,13 +25,7 @@ jobs:
 
       - name: Install vcpkg
         shell: pwsh
-        run: |
-          git clone https://github.com/microsoft/vcpkg
-          if ("${{ matrix.os }}" -eq "windows-latest") {
-            & "${{ github.workspace }}\vcpkg\bootstrap-vcpkg.bat"
-          } else {
-            & "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh"
-          }
+        run: "${{ github.workspace }}/vcpkg/bootstrap-vcpkg.sh"
 
       - name: Build
         run: |
