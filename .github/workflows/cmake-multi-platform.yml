@@ -21,6 +21,14 @@ jobs:
           yum groupinstall -y "Development Tools"
           yum install -y cmake3 make automake gcc gcc-c++ kernel-devel
 
+      # Ensure tools are in PATH and set CMake variables
+      - name: Set environment for tools
+        run: |
+          echo "PATH=$PATH:/usr/local/bin" >> $GITHUB_ENV
+          echo "CMAKE_C_COMPILER=/usr/bin/gcc" >> $GITHUB_ENV
+          echo "CMAKE_CXX_COMPILER=/usr/bin/g++" >> $GITHUB_ENV
+          echo "CMAKE_MAKE_PROGRAM=/usr/bin/make" >> $GITHUB_ENV
+
       - name: Install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git
@@ -36,6 +44,5 @@ jobs:
 
       - name: Build with CMake and vcpkg
         run: |
-          ls -la vcpkg/scripts/buildsystems/vcpkg.cmake
-          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake3 --build build
