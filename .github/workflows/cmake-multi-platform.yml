@@ -15,6 +15,19 @@ jobs:
         run: |
           yum install -y curl zip unzip tar git 
 
+      - name: Install GCC 8
+        run: |
+          yum install -y centos-release-scl
+          yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
+          echo "source /opt/rh/devtoolset-8/enable" >> ~/.bashrc
+
+      - name: Install latest CMake
+        run: |
+          CMAKE_VERSION=3.27.1
+          CMAKE_DIR=cmake-$CMAKE_VERSION-Linux-x86_64
+          curl -sLO https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/$CMAKE_DIR.tar.gz
+          tar -zxf $CMAKE_DIR.tar.gz --strip-components=1 -C /usr/local
+
       - name: Manually install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg.git
@@ -25,13 +38,6 @@ jobs:
           yum install -y epel-release
           yum update -y
           yum groupinstall -y "Development Tools"
-          yum install -y cmake3
-
-      - name: Install GCC 8
-        run: |
-          yum install -y centos-release-scl
-          yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
-          echo "source /opt/rh/devtoolset-8/enable" >> ~/.bashrc
 
       - name: Install dependencies with vcpkg
         run: |
