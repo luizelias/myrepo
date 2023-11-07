@@ -19,7 +19,6 @@ jobs:
         run: |
           git clone https://github.com/microsoft/vcpkg.git
           ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
-          vcpkg integrate install
 
       - name: Enable EPEL repository and Install tools
         run: |
@@ -35,7 +34,13 @@ jobs:
           echo "source /opt/rh/devtoolset-8/enable" >> ~/.bashrc
           source /opt/rh/devtoolset-8/enable
 
+      - name: Install dependencies with vcpkg
+        run: |
+          source /opt/rh/devtoolset-8/enable
+          ./vcpkg/vcpkg install
+
       - name: Build with CMake and vcpkg
         run: |
+          source /opt/rh/devtoolset-8/enable
           cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
           cmake3 --build build
