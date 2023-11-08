@@ -11,15 +11,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install required tools
+      - name: Install latest git from IUS
         run: |
-          yum install -y curl zip unzip tar git 
-
-      - name: Install GCC 8
-        run: |
-          yum install -y centos-release-scl
-          yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
-          echo "source /opt/rh/devtoolset-8/enable" >> ~/.bashrc
+          yum remove -y git
+          yum install -y https://repo.ius.io/ius-release-el7.rpm
+          yum install -y git2u-all
+          echo "export PATH=/usr/bin:\$PATH" >> $GITHUB_ENV
+          git --version
 
       - name: Install latest CMake
         run: |
@@ -27,26 +25,34 @@ jobs:
           CMAKE_DIR=cmake-$CMAKE_VERSION-Linux-x86_64
           curl -sLO https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/$CMAKE_DIR.tar.gz
           tar -zxf $CMAKE_DIR.tar.gz --strip-components=1 -C /usr/local
+          cmake --version
 
-      - name: Manually install vcpkg
+      - name: Install required tools
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+          yum install -y curl zip unzip tar
 
-      - name: Enable EPEL repository and Install tools
+      - name: Install Development Tools and CMake3
         run: |
           yum install -y epel-release
           yum update -y
           yum groupinstall -y "Development Tools"
+          yum install -y cmake3
 
-      - name: Install dependencies with vcpkg
+      - name: Install GCC 8
+        run: |
+          yum install -y centos-release-scl
+          yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
+          echo "source /opt/rh/devtoolset-8/enable" >> $GITHUB_ENV
+
+      - name: Manually install vcpkg
         run: |
           source /opt/rh/devtoolset-8/enable
-          ./vcpkg/vcpkg install
+          git clone https://github.com/microsoft/vcpkg.git
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       - name: Build with CMake and vcpkg
         run: |
           source /opt/rh/devtoolset-8/enable
           ./vcpkg/vcpkg integrate install
-          cmake3 -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
-          cmake3 --build build
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+          cmake --build build
