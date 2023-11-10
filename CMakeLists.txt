@@ -18,4 +18,4 @@ find_package(asio CONFIG REQUIRED)
 add_executable(YourProject main.cpp)
 
 # Link libraries
-target_link_libraries(YourProject PRIVATE nlohmann_json nlohmann_json::nlohmann_json Eigen3::Eigen Alembic::Alembic glm fmt::fmt glfw glad::glad Asio::Asio)
+target_link_libraries(YourProject PRIVATE nlohmann_json nlohmann_json::nlohmann_json Eigen3::Eigen Alembic::Alembic glm fmt::fmt glfw glad::glad asio::asio)
