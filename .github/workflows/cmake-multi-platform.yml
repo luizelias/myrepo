@@ -28,7 +28,8 @@ jobs:
 
     - name: Configure CMake with Verbose Output
       run: |
-        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake --verbose
+        cmake --verbose -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+
 
     - name: Inspect CMake Cache
       run: |
