@@ -12,7 +12,7 @@ find_package(glm CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
-find_package(Asio CONFIG REQUIRED)
+find_package(asio CONFIG REQUIRED)
 
 # Add your source files
 add_executable(YourProject main.cpp)
