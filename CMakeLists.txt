@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Include vcpkg toolchain
 set(CMAKE_TOOLCHAIN_FILE "/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "")
 
+
 # Find packages
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
