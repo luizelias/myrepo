@@ -26,7 +26,19 @@ jobs:
           exit 1
         fi
 
-    - name: Configure CMake
+    - name: Configure CMake with Verbose Output
+      run: |
+        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake --verbose
+
+    - name: Inspect CMake Cache
+      run: |
+        cat build/CMakeCache.txt
+
+    - name: Clear CMake Cache
+      run: |
+        rm -rf build/CMakeCache.txt
+
+    - name: Re-configure CMake
       run: |
         cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
 
