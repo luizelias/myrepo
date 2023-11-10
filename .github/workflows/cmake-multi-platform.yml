@@ -16,15 +16,35 @@ jobs:
     - name: Setup GCC
       run: |
         source /opt/rh/devtoolset-8/enable
+        gcc --version
+        g++ --version
 
     - name: Create Build Directory
       run: mkdir -p build
+
+    - name: Adjust permissions and check working directory
+      run: |
+        ls -la
+        chmod -R 777 build
+
+    - name: Clear CMake Cache
+      run: |
+        rm -rf build/CMakeCache.txt
+
+    - name: Debug Output
+      run: |
+        env
+        cmake --version
+        which cmake
+        which gcc
+        which g++
+
+    - name: Run CMake
+      run: |
+        cmake -B build -S .
     
     - name: Create Build Environment
-      run: |
-        cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-        cmake --build build
+      run: cmake --build build
 
     - name: Test
-      run: |
-        ./build/YourProject
+      run: ./build/YourProject
