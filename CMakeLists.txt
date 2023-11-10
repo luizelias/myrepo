@@ -18,7 +18,7 @@ find_package(glad CONFIG REQUIRED)
 find_package(Asio CONFIG REQUIRED)
 
 # Add your source files
-add_executable(YourProject main.cpp)
+add_executable(HelloWorld main.cpp)
 
 # Link libraries
 target_link_libraries(YourProject PRIVATE nlohmann_json nlohmann_json::nlohmann_json Eigen3::Eigen Alembic::Alembic glm fmt::fmt glfw glad::glad Asio::Asio)
