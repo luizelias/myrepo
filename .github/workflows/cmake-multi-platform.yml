@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   workflow_dispatch:
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,28 +13,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup Environment
+    - name: Setup GCC
       run: |
         source /opt/rh/devtoolset-8/enable
         gcc --version
         g++ --version
-        echo "PATH=$PATH:/usr/local/bin" >> $GITHUB_ENV
 
-    - name: Verify GCC and CMake Versions
+    - name: Configure CMake
       run: |
-        gcc --version
-        g++ --version
-        cmake --version
-
-    - name: Create Build Directory
-      run: mkdir -p build
-
-    - name: Run CMake Configuration
-      run: |
-        cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
 
     - name: Build
-      run: cmake --build build
+      run: |
+        cmake --build build
 
     - name: Test
-      run: ./build/YourProject
+      run: |
+        ./build/YourProject
