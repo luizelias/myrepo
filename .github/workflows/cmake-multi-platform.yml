@@ -13,9 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup GCC
+    - name: Setup Environment
       run: |
         source /opt/rh/devtoolset-8/enable
+        export PATH=/usr/bin:$PATH
         gcc --version
         g++ --version
 
@@ -39,11 +40,12 @@ jobs:
         which gcc
         which g++
 
-    - name: Run CMake
+    - name: Run CMake Configuration
       run: |
-        cmake -B build -S .
-    
-    - name: Create Build Environment
+        cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cat build/CMakeCache.txt
+
+    - name: Build
       run: cmake --build build
 
     - name: Test
