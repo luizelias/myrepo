@@ -16,34 +16,22 @@ jobs:
     - name: Setup Environment
       run: |
         source /opt/rh/devtoolset-8/enable
-        export PATH=/usr/bin:$PATH
         gcc --version
         g++ --version
+        echo "PATH=$PATH:/usr/local/bin" >> $GITHUB_ENV
+
+    - name: Verify GCC and CMake Versions
+      run: |
+        gcc --version
+        g++ --version
+        cmake --version
 
     - name: Create Build Directory
       run: mkdir -p build
 
-    - name: Adjust permissions and check working directory
-      run: |
-        ls -la
-        chmod -R 777 build
-
-    - name: Clear CMake Cache
-      run: |
-        rm -rf build/CMakeCache.txt
-
-    - name: Debug Output
-      run: |
-        env
-        cmake --version
-        which cmake
-        which gcc
-        which g++
-
     - name: Run CMake Configuration
       run: |
         cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-        cat build/CMakeCache.txt
 
     - name: Build
       run: cmake --build build
