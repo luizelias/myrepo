@@ -1,52 +1,20 @@
-name: C++ CI
+name: Docker CI
 
-on: [push]
+on:
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-run:
     runs-on: ubuntu-latest
-
-    container:
+    container: 
       image: luizelias/mush3d-centos-7.9
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-    - name: Setup GCC
-      run: |
-        source /opt/rh/devtoolset-8/enable
-        gcc --version
-        g++ --version
+    - name: Print CMake Version
+      run: cmake --version
 
-    - name: Create and Verify Build Directory
-      run: |
-        mkdir -p build
-        if [ ! -d "build" ]; then
-          echo "Build directory not found!"
-          exit 1
-        fi
-
-    - name: Configure CMake with Verbose Output
-      run: |
-        cmake --verbose -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-
-
-    - name: Inspect CMake Cache
-      run: |
-        cat build/CMakeCache.txt
-
-    - name: Clear CMake Cache
-      run: |
-        rm -rf build/CMakeCache.txt
-
-    - name: Re-configure CMake
-      run: |
-        cmake -B build -S . -DCMAKE_BUILD_TYPE=Release -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
-
-    - name: Build
-      run: |
-        cmake --build build
-
-    - name: Test
-      run: |
-        ./build/YourProject
+    - name: Print Vcpkg Root
+      run: echo $VCPKG_ROOT
