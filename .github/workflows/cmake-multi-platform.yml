@@ -1,58 +1,24 @@
-name: CMake on CentOS 7.9
+name: C++ CI
 
-on: workflow_dispatch
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: centos:7.9.2009
+    container: 
+      image: your-dockerhub-username/mush3d-centos-7.9:latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Install latest git from IUS
-        run: |
-          yum remove -y git
-          yum install -y https://repo.ius.io/ius-release-el7.rpm
-          yum install -y git2u-all
-          echo "export PATH=/usr/bin:\$PATH" >> $GITHUB_ENV
-          git --version
+    - name: Create Build Directory
+      run: mkdir build && cd build
 
-      - name: Install latest CMake
-        run: |
-          CMAKE_VERSION=3.27.1
-          CMAKE_DIR=cmake-$CMAKE_VERSION-Linux-x86_64
-          curl -sLO https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/$CMAKE_DIR.tar.gz
-          tar -zxf $CMAKE_DIR.tar.gz --strip-components=1 -C /usr/local
-          cmake --version
+    - name: Run CMake
+      run: cmake ..
 
-      - name: Install required tools
-        run: |
-          yum install -y curl zip unzip tar
+    - name: Build
+      run: cmake --build .
 
-      - name: Install Development Tools and CMake3
-        run: |
-          yum install -y epel-release
-          yum update -y
-          yum groupinstall -y "Development Tools"
-          yum install -y cmake3
-
-      - name: Install GCC 8
-        run: |
-          yum install -y centos-release-scl
-          yum install -y devtoolset-8-gcc devtoolset-8-gcc-c++
-          echo "source /opt/rh/devtoolset-8/enable" >> $GITHUB_ENV
-
-      - name: Manually install vcpkg
-        run: |
-          source /opt/rh/devtoolset-8/enable
-          git clone https://github.com/microsoft/vcpkg.git
-          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
-
-      - name: Build with CMake and vcpkg
-        run: |
-          source /opt/rh/devtoolset-8/enable
-          ./vcpkg/vcpkg integrate install
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
-          cmake --build build
+    - name: Run
+      run: ./hello_world
