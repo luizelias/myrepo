@@ -1,24 +1,23 @@
 name: C++ CI
 
-on: [push, pull_request]
+on:
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: 
-      image: your-dockerhub-username/mush3d-centos-7.9:latest
+
+    container:
+      image: luizelias/mush3d-centos-7.9
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Create Build Directory
-      run: mkdir build && cd build
+    - name: Create Build Environment
+      run: |
+        cmake -B build -S .
+        cmake --build build
 
-    - name: Run CMake
-      run: cmake ..
-
-    - name: Build
-      run: cmake --build .
-
-    - name: Run
-      run: ./hello_world
+    - name: Test
+      run: |
+        ./build/YourProject
