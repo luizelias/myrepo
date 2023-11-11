@@ -30,36 +30,6 @@ int main() {
     // Example usage of fmt
     fmt::print("Formatted text from fmt: {}\n", jsonExample.dump());
 
-    // GLFW and Glad example (Creating a window)
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
-    if (window == NULL) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-
-    // Load GLAD
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }
-
-    // Main render loop
-    while (!glfwWindowShouldClose(window)) {
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    // Cleanup
-    glfwDestroyWindow(window);
-    glfwTerminate();
-
     // Example usage of Asio (just a version print for demonstration)
     std::cout << "ASIO version: " << ASIO_VERSION << std::endl;
 
