@@ -16,14 +16,15 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Verify CMake Installation
-      run: cmake --version
+    - name: Enable GCC 8 and Check Version
+      run: |
+        source /opt/rh/devtoolset-8/enable
+        gcc --version
+      shell: bash
 
     - name: Verify Vcpkg Installation
       run: |
         echo "Vcpkg Root: $VCPKG_ROOT"
         /vcpkg/vcpkg version
         /vcpkg/vcpkg list
-      shell: sh -e {0}
-
-    # Add more steps as needed to compile/test code using dependencies
+      shell: bash
