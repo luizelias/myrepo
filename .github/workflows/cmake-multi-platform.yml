@@ -1,7 +1,10 @@
 name: Docker CI
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+  #workflow_dispatch:
 
 jobs:
   build-and-run:
@@ -19,7 +22,8 @@ jobs:
     - name: Verify Vcpkg Installation
       run: |
         echo "Vcpkg Root: $VCPKG_ROOT"
-        /path/to/vcpkg/vcpkg version
-        /path/to/vcpkg/vcpkg list
+        /vcpkg/vcpkg version
+        /vcpkg/vcpkg list
+      shell: sh -e {0}
 
     # Add more steps as needed to compile/test code using dependencies
