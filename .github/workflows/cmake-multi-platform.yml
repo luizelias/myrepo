@@ -28,3 +28,9 @@ jobs:
         /vcpkg/vcpkg version
         /vcpkg/vcpkg list
       shell: bash
+
+    - name: Run CMake
+      run: |
+        cd build
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+
