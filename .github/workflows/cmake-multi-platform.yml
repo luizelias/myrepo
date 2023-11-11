@@ -29,8 +29,15 @@ jobs:
         /vcpkg/vcpkg list
       shell: bash
 
+    - name: Create Build Directory
+      run: mkdir build && cd build
+
     - name: Run CMake
       run: |
         cd build
         cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
 
+    - name: Build Project
+      run: |
+        cd build
+        make
