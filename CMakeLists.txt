@@ -15,6 +15,7 @@ find_package(glad CONFIG REQUIRED)
 find_package(asio CONFIG REQUIRED)
 
 message(STATUS "Alembic include dirs: ${Alembic_INCLUDE_DIRS}")
+message(STATUS "Found Alembic: ${Alembic_FOUND}")
 
 # Add your source files
 add_executable(HelloWorld main.cpp)
