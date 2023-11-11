@@ -7,7 +7,7 @@ jobs:
   build-and-run:
     runs-on: ubuntu-latest
     container: 
-      image: luizelias/mush3d-centos-7.9
+      image: luizelias/centos-7.9
 
     steps:
     - name: Checkout Repository
