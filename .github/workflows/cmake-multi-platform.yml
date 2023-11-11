@@ -18,3 +18,4 @@ jobs:
 
     - name: Print Vcpkg Root
       run: echo $VCPKG_ROOT
+      shell: sh -e {0}
