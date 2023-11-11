@@ -25,7 +25,6 @@ target_link_libraries(HelloWorld PRIVATE
 nlohmann_json::nlohmann_json
 Eigen3::Eigen 
 Alembic::Alembic 
-glm 
 fmt::fmt 
 glfw 
 glad::glad 
