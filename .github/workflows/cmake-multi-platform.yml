@@ -42,3 +42,8 @@ jobs:
       run: |
         cd build
         make
+
+    - name: Run Application
+      run: |
+        cd build
+        ./HelloWorld
