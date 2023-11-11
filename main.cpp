@@ -1,12 +1,12 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include <nlohmann/json.hpp>
 #include <Eigen/Dense>
 #include <Alembic/AbcGeom/All.h>
 #include <glm/glm.hpp>
 #include <fmt/core.h>
-#include <GLFW/glfw3.h>
-#include <glad/glad.h>
 #include <asio.hpp>
-
 #include <iostream>
 
 int main() {
