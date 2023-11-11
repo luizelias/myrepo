@@ -1,6 +1,6 @@
 #include <nlohmann/json.hpp>
 #include <Eigen/Dense>
-#include <alembic/AbcGeom/All.h>
+#include <Alembic/AbcGeom/All.h>
 #include <glm/glm.hpp>
 #include <fmt/core.h>
 #include <GLFW/glfw3.h>
