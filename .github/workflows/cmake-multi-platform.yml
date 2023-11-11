@@ -34,8 +34,9 @@ jobs:
 
     - name: Run CMake
       run: |
+        source /opt/rh/devtoolset-8/enable
         cd build
-        cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake .. -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
 
     - name: Build Project
       run: |
