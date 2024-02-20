@@ -18,6 +18,7 @@ jobs:
       run: |
         yum update -y
         yum install -y curl zip unzip tar git
+        git --version
 
     - name: Install vcpkg
       run: |
