@@ -17,7 +17,16 @@ jobs:
     - name: Install Dependencies
       run: |
         yum update -y
-        yum install -y curl zip unzip tar git
+        yum install -y curl zip unzip tar
+
+    - name: Install Latest Git
+      run: |
+        yum remove -y git
+        yum install -y https://repo.ius.io/ius-release-el7.rpm
+        yum install -y git2u
+
+    - name: Verify Git Version
+      run: |
         git --version
 
     - name: Install vcpkg
