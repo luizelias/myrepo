@@ -14,6 +14,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Install Updated GCC and Build Tools
+      run: |
+        yum install -y centos-release-scl
+        yum install -y devtoolset-9-gcc devtoolset-9-gcc-c++ devtoolset-9-binutils
+        echo "source /opt/rh/devtoolset-9/enable" >> ~/.bashrc
+        source /opt/rh/devtoolset-9/enable
+        gcc --version
+
     - name: Install Build Dependencies
       run: |
         yum update -y
@@ -26,7 +34,7 @@ jobs:
         curl -L -o git.tar.gz https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz
         tar xzf git.tar.gz
         cd git-2.43.0
-        make prefix=/usr/local all
+        make prefix=/usr/local CFLAGS="-std=c99" all
         make prefix=/usr/local install
 
     - name: Verify Git Version
