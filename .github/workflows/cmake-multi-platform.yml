@@ -23,8 +23,8 @@ jobs:
     - name: Install Git from Source
       run: |
         cd /usr/src
-        curl -O https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz
-        tar xzf git-2.43.0.tar.gz
+        curl -L -o git.tar.gz https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz
+        tar xzf git.tar.gz
         cd git-2.43.0
         make prefix=/usr/local all
         make prefix=/usr/local install
