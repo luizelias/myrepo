@@ -14,16 +14,20 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Install Dependencies
+    - name: Install Build Dependencies
       run: |
         yum update -y
-        yum install -y curl zip unzip tar
+        yum groupinstall -y "Development Tools"
+        yum install -y gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel curl-devel
 
-    - name: Install Latest Git
+    - name: Install Git from Source
       run: |
-        yum remove -y git
-        yum install -y https://repo.ius.io/ius-release-el7.rpm
-        yum install -y git2u
+        cd /usr/src
+        curl -O https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz
+        tar xzf git-2.43.0.tar.gz
+        cd git-2.43.0
+        make prefix=/usr/local all
+        make prefix=/usr/local install
 
     - name: Verify Git Version
       run: |
