@@ -34,13 +34,13 @@ jobs:
 
     - name: Install Git from Source
       run: |
+        gcc --version
         cd /usr/src
         curl -L -o git.tar.gz https://www.kernel.org/pub/software/scm/git/git-2.43.0.tar.gz
         tar xzf git.tar.gz
         cd git-2.43.0
         export CC=/opt/rh/devtoolset-9/root/usr/bin/gcc
         export CXX=/opt/rh/devtoolset-9/root/usr/bin/g++
-        gcc --version
         make prefix=/usr/local all
         make prefix=/usr/local install
 
