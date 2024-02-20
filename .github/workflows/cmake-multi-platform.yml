@@ -14,6 +14,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Remove older GCC version
+      run: |
+        yum remove -y gcc gcc-c++
+
     - name: Install devtoolset-9 and set up environment
       run: |
         yum install -y centos-release-scl
@@ -26,7 +30,6 @@ jobs:
         yum update -y
         yum groupinstall -y "Development Tools"
         yum install -y gettext-devel openssl-devel perl-CPAN perl-devel zlib-devel curl-devel expat-devel
-        scl enable devtoolset-9 bash
         gcc --version
 
     - name: Install Git from Source
